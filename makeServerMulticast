@@ -1,0 +1,21 @@
+all:test
+
+test: PaqueteDatagrama.o SocketMulticast.o SocketDatagrama.o multicastServer.o 
+	g++ multicastServer.o SocketMulticast.o SocketDatagrama.o PaqueteDatagrama.o -o multicastServer
+
+multicastServer.o:multicastServer.cpp
+	g++ multicastServer.cpp -c
+
+PaqueteDatagrama.o:PaqueteDatagrama.cpp
+	rm -f *.o *~
+	g++ PaqueteDatagrama.cpp -c	
+
+SocketMulticast.o:SocketMulticast.cpp
+	g++ SocketMulticast.cpp -c
+
+SocketDatagrama.o: SocketDatagrama.cpp
+	g++ SocketDatagrama.cpp -c
+
+
+
+	
