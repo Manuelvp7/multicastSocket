@@ -54,7 +54,7 @@ int SocketMulticast::recibe(PaqueteDatagrama *p){
 
     p->inicializaIP(inet_ntoa(direccionForanea.sin_addr));
     p->inicializaPuerto(ntohs(direccionForanea.sin_port));
-    printf("multicast recibe sendto(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
+    printf("multicast recibe recvfrom(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
     return 1;
 }
 
@@ -74,7 +74,7 @@ int SocketMulticast::envia(PaqueteDatagrama * p, unsigned char ttl){
     direccionForanea.sin_addr.s_addr = inet_addr(p->obtieneDireccion());
     direccionForanea.sin_port = htons(p->obtienePuerto());
     unsigned int lData = sizeof(direccionForanea);
-    printf("sendto(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
+    printf("multicast envia sendto(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
     enviado = sendto(s, p->obtieneDatos(), p->obtieneLongitud(), 0, (struct sockaddr *)&direccionForanea, lData);
     return enviado;
 }
