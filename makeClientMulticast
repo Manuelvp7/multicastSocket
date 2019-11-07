@@ -1,0 +1,26 @@
+all:test
+    
+
+test: PaqueteDatagrama.o SocketMulticast.o SocketDatagrama.o Solicitud.o multicastClient.o
+	g++ multicastClient.o SocketMulticast.o PaqueteDatagrama.o SocketDatagrama.o Solicitud.o -o clientMulticast
+
+multicastClient.o:multicastClient.cpp
+	g++ multicastClient.cpp -c
+
+PaqueteDatagrama.o:PaqueteDatagrama.cpp
+	rm -f *.o *~ 
+	g++ PaqueteDatagrama.cpp -c	
+
+SocketMulticast.o:SocketMulticast.cpp
+	
+	g++ SocketMulticast.cpp -c
+
+SocketDatagrama.o:SocketDatagrama.cpp
+	g++ SocketDatagrama.cpp -c
+
+Solicitud.o:Solicitud.cpp
+	g++ Solicitud.cpp -c
+
+
+
+	
