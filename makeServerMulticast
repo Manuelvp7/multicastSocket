@@ -3,8 +3,6 @@ all:test
 test: PaqueteDatagrama.o SocketMulticast.o SocketDatagrama.o multicastServer.o 
 	g++ multicastServer.o SocketMulticast.o SocketDatagrama.o PaqueteDatagrama.o -o multicastServer
 
-multicastServer.o:multicastServer.cpp
-	g++ multicastServer.cpp -c
 
 PaqueteDatagrama.o:PaqueteDatagrama.cpp
 	rm -f *.o *~
@@ -15,6 +13,9 @@ SocketMulticast.o:SocketMulticast.cpp
 
 SocketDatagrama.o: SocketDatagrama.cpp
 	g++ SocketDatagrama.cpp -c
+
+multicastServer.o:multicastServer.cpp
+	g++ multicastServer.cpp -c
 
 
 
