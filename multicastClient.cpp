@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
 	socketMulticast.unirseGrupo(argv[1]);
 	while(true){
 		socketMulticast.recibe(&package);
-		printf("RESPONDER A: %s %d\n",package.obtieneDireccion(),package.obtienePuerto() );
+		// printf("RESPONDER A: %s %d\n",package.obtieneDireccion(),package.obtienePuerto() );
 		a = solicitud.doOperation(package.obtieneDireccion(),package.obtienePuerto(),1,"HOLA QUE PASO");
 		//socketDatagrama.envia(package);
 
