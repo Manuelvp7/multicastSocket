@@ -45,11 +45,16 @@ int SocketMulticast::recibe(PaqueteDatagrama *p){
     struct in_addr ipAdd = ip->sin_addr;
     unsigned short ipPort = ip->sin_port;
     inet_ntop(AF_INET, &ipAdd, str, INET_ADDRSTRLEN);
-    printf("IP: %s  \n", str);
-    printf("Puerto: %d \n", (int) ntohs(ip->sin_port));
+
+
+
+    printf("IP: %s  ", str);
+    printf("Puerto: %d ", (int) ntohs(ip->sin_port));
     printf(" %s\n",p->obtieneDatos() );
+
     p->inicializaIP(inet_ntoa(direccionForanea.sin_addr));
     p->inicializaPuerto(ntohs(direccionForanea.sin_port));
+    printf("sendto(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
     return 1;
 }
 
