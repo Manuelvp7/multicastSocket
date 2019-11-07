@@ -28,7 +28,7 @@ int SocketDatagrama::envia(PaqueteDatagrama &p){
     int enviado;
     direccionForanea.sin_family = AF_INET;
     direccionForanea.sin_addr.s_addr = inet_addr(p.obtieneDireccion());
-    direccionForanea.sin_port = htons(p.obtienePuerto());
+    direccionForanea.sin_port = htons(6666);
     unsigned int lData = sizeof(direccionForanea);
     printf("unicast envia sendto(%d,%s,%d,%s,%d,)\n",s,p.obtieneDatos(), p.obtieneLongitud(),p.obtieneDireccion(),p.obtienePuerto() );
     enviado = sendto(s, p.obtieneDatos(), p.obtieneLongitud(), 0, (struct sockaddr *)&direccionForanea, lData);
@@ -56,8 +56,8 @@ int SocketDatagrama::recibe(PaqueteDatagrama *p){
     struct in_addr ipAdd = ip->sin_addr;
     unsigned short ipPort = ip->sin_port;
     inet_ntop(AF_INET, &ipAdd, str, INET_ADDRSTRLEN);
-    printf("IP: %s  \n", str);
-    printf("Puerto: %d \n", (int) ntohs(ip->sin_port));
+    printf("IP: %s  ", str);
+    printf("Puerto: %d", (int) ntohs(ip->sin_port));
     printf(" %s\n",p->obtieneDatos() );
     p->inicializaIP(inet_ntoa(direccionForanea.sin_addr));
     p->inicializaPuerto(ntohs(direccionForanea.sin_port));
@@ -71,14 +71,21 @@ int SocketDatagrama::recibeTimeout(PaqueteDatagrama *p, time_t segundos, susecon
     
     timeout.tv_sec = segundos;
     timeout.tv_usec = microsegundos;
-    setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
+    //setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
     unsigned int lData = sizeof(direccionForanea);
 
 
     int i = recvfrom(s, respuesta, 4000, 0, (struct sockaddr *) &direccionForanea, &lData);
-    printf("LA respuesta  ES %s\n",respuesta );
+    if (i<0){
+        printf("ERROR EN RECIBETIMEOUT\n");
+        exit(0);
+    }else{
+        printf("unicast recibeTimeOut recvfrom(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
+        printf("PASS\n");
+    }
 
-
+        
+    //printf("LA respuesta  ES %s\n",respuesta );
 
     p->inicializaArgumentosMensaje(respuesta);
     char str[INET_ADDRSTRLEN];
@@ -89,6 +96,10 @@ int SocketDatagrama::recibeTimeout(PaqueteDatagrama *p, time_t segundos, susecon
 
     p->inicializaIP(inet_ntoa(direccionForanea.sin_addr));
     p->inicializaPuerto(ntohs(direccionForanea.sin_port));
+
+
+    printf("unicast recibeTimeOut recvfrom(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
+
     printf("IP: %s  ", str);
     printf("Puerto: %d ", (int) ntohs(ip->sin_port));
     printf(" %s\n",respuesta );
