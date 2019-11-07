@@ -54,7 +54,7 @@ int SocketMulticast::recibe(PaqueteDatagrama *p){
 
     p->inicializaIP(inet_ntoa(direccionForanea.sin_addr));
     p->inicializaPuerto(ntohs(direccionForanea.sin_port));
-    printf("sendto(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
+    printf("multicast recibe sendto(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
     return 1;
 }
 

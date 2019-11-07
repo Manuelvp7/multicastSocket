@@ -30,7 +30,7 @@ int SocketDatagrama::envia(PaqueteDatagrama &p){
     direccionForanea.sin_addr.s_addr = inet_addr(p.obtieneDireccion());
     direccionForanea.sin_port = htons(p.obtienePuerto());
     unsigned int lData = sizeof(direccionForanea);
-    printf("sendto(%d,%s,%d,%s,%d,)\n",s,p.obtieneDatos(), p.obtieneLongitud(),p.obtieneDireccion(),p.obtienePuerto() );
+    printf("unicast envia sendto(%d,%s,%d,%s,%d,)\n",s,p.obtieneDatos(), p.obtieneLongitud(),p.obtieneDireccion(),p.obtienePuerto() );
     enviado = sendto(s, p.obtieneDatos(), p.obtieneLongitud(), 0, (struct sockaddr *)&direccionForanea, lData);
     return enviado;
 }
