@@ -7,14 +7,14 @@ class PaqueteDatagrama{
 	public:
 		PaqueteDatagrama(struct mensaje  msj1, char* ip1,int port );
 		PaqueteDatagrama();
-		char * obtieneDatos();
+		int * obtieneDatos();
 		char *obtieneDireccion();
 		int obtienePuerto();
 		unsigned int obtieneLongitud();
 		struct mensaje obtieneMensaje();
 		void inicializaIP(char*);
 		void inicializaPuerto(int);
-		void inicializaArgumentosMensaje(char * args);
+		void inicializaArgumentosMensaje(int args[]);
 
 		//~PaqueteDatagrama();
 
