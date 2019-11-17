@@ -27,7 +27,7 @@ char * Solicitud::doOperation(char * IP, int puerto, int doOperationId, char * a
 
 	struct mensaje msj2 = package1.obtieneMensaje();
 	//printf("Enviando al server: %d,%d,%d, %s\n",msj2.messageType,msj2.requestId,msj2.operationId,package1.obtieneDatos() );	
-	socketlocal->envia(package1);
+	socketlocal->envia(&package1);
 	//socketlocal->recibe(&packageRecv);
 
 	char  a[10] = "abc";

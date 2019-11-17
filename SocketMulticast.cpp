@@ -15,11 +15,11 @@ using namespace std;
 SocketMulticast::SocketMulticast(int port){
     //s = socket(AF_INET, SOCK_DGRAM, 0);
     s = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    // int reuse = 1;
-    // if (setsockopt(s, SOL_SOCKET, SO_REUSEPORT, &reuse, sizeof(reuse)) == -1) {
-    //     printf("Error al llamar a la función setsockopt\n");
-    //     exit(0);
-    // }
+    int reuse = 1;
+    if (setsockopt(s, SOL_SOCKET, SO_REUSEPORT, &reuse, sizeof(reuse)) == -1) {
+        printf("Error al llamar a la función setsockopt\n");
+        exit(0);
+    }
     // unsigned char TTL = "1";
     struct sockaddr_in direccionLocal;
     bzero((char *)&direccionLocal, sizeof(direccionLocal));
@@ -36,25 +36,26 @@ SocketMulticast::~SocketMulticast(){
 int SocketMulticast::recibe(PaqueteDatagrama *p){
 
     struct sockaddr_in direccionForanea;
-    char * respuesta = (char*)malloc(sizeof(char)*4000);
+    int num[2];
     unsigned int lData = sizeof(direccionForanea);
-    int responseStatus = recvfrom(s, respuesta, 4000, 0, (struct sockaddr *)&direccionForanea, &lData);
-    p->inicializaArgumentosMensaje(respuesta);
+    int responseStatus = recvfrom(s, (char*)num, 2*sizeof(int), 0, (struct sockaddr *)&direccionForanea, &lData);
+    
     char str[INET_ADDRSTRLEN];
     struct sockaddr_in* ip = (struct sockaddr_in*)&direccionForanea;
     struct in_addr ipAdd = ip->sin_addr;
     unsigned short ipPort = ip->sin_port;
     inet_ntop(AF_INET, &ipAdd, str, INET_ADDRSTRLEN);
 
+    p->inicializaArgumentosMensaje(num);
 
 
-    printf("IP: %s  ", str);
+    printf("RECIBIENDO MENSAJE DE: IP: %s  ", str);
     printf("Puerto: %d ", (int) ntohs(ip->sin_port));
-    printf(" %s\n",p->obtieneDatos() );
+    printf("OPERACION: %d + %d  \n\n",num[0],num[1] );
 
     p->inicializaIP(inet_ntoa(direccionForanea.sin_addr));
-    p->inicializaPuerto(ntohs(direccionForanea.sin_port));
-    printf("multicast recibe recvfrom(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
+    p->inicializaPuerto(ntohs(direccionForanea.sin_port)+100);
+    //printf("multicast recibe recvfrom(%d,%d+%d,%d,%s,%d,)\n",s,num[0],num[1], p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
     return 1;
 }
 
@@ -74,7 +75,8 @@ int SocketMulticast::envia(PaqueteDatagrama * p, unsigned char ttl){
     direccionForanea.sin_addr.s_addr = inet_addr(p->obtieneDireccion());
     direccionForanea.sin_port = htons(p->obtienePuerto());
     unsigned int lData = sizeof(direccionForanea);
-    printf("multicast envia sendto(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
+    printf("Enviando operacion a: %s %d", p->obtieneDireccion(),p->obtienePuerto());
+    // printf("multicast envia sendto(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
     enviado = sendto(s, p->obtieneDatos(), p->obtieneLongitud(), 0, (struct sockaddr *)&direccionForanea, lData);
     return enviado;
 }

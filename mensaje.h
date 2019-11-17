@@ -7,6 +7,6 @@ struct mensaje {
     int messageType;
     int requestId;
     int operationId;
-    char arguments[TAM_MAX_DATA];
+    int arguments[2];
 };
 #endif
