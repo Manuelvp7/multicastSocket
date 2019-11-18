@@ -16,7 +16,8 @@ int main(int argc, char *argv[]){
     msj.operationId = 10;
 
     int nums[2]={4,8};
-    msj.arguments = nums;
+    msj.arguments[0] = nums[0];
+    msj.arguments[1] = nums[1];
 
     // strcpy(msj.arguments,"hola");
 
@@ -27,7 +28,7 @@ int main(int argc, char *argv[]){
 	time_t segundos = 15;
 	int x ;
 	
-	for (int j=0;j<2;j++){
+	for (;;){
 		socketMulticast.envia(&packageMulicast,ttl);
 		socketDatagrama.recibeTimeout(&packageUnicast,segundos,microsegundos);
 		// x=socketDatagrama.recibe(&packageUnicast);

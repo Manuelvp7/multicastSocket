@@ -45,6 +45,7 @@ int SocketMulticast::recibe(PaqueteDatagrama *p){
     struct in_addr ipAdd = ip->sin_addr;
     unsigned short ipPort = ip->sin_port;
     inet_ntop(AF_INET, &ipAdd, str, INET_ADDRSTRLEN);
+    printf("numero 1 %d\n",num[0] );
 
     p->inicializaArgumentosMensaje(num);
 
