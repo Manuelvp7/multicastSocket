@@ -75,7 +75,7 @@ int SocketDatagrama::recibe(PaqueteDatagrama *p){
     inet_ntop(AF_INET, &ipAdd, str, INET_ADDRSTRLEN);
     printf("IP: %s  \n", str);
     printf("Puerto: %d \n", (int) ntohs(ip->sin_port));
-    printf(" %s\n",p->obtieneDatos() );
+    printf(" %d\n",p->obtieneDatos()[0] );
     p->inicializaIP(inet_ntoa(direccionForanea.sin_addr));
     p->inicializaPuerto(ntohs(direccionForanea.sin_port));
 
@@ -95,7 +95,7 @@ int SocketDatagrama::recibeTimeout(PaqueteDatagrama *p, time_t segundos, susecon
 
     int i = recvfrom(s, (char*)&respuesta, sizeof(int), 0, (struct sockaddr *) &direccionForanea, &lData);
     printf("LA respuesta  ES %d\n",respuesta );
-    int num[] = {respuesta};
+    int num[2] = {respuesta,0};
     
     
     struct sockaddr_in * ip = (struct sockaddr_in*)&direccionForanea;
@@ -109,7 +109,7 @@ int SocketDatagrama::recibeTimeout(PaqueteDatagrama *p, time_t segundos, susecon
 
     printf("IP: %s  ", str);
     printf("Puerto: %d ", (int) ntohs(ip->sin_port));
-    printf(" %s\n",respuesta );
+    printf(" %d\n",respuesta );
 
     return i;
 }

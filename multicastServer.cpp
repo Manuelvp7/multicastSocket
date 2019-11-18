@@ -9,7 +9,7 @@
 int main(int argc, char *argv[]){
 
 	SocketMulticast socketMulticast = SocketMulticast(atoi(argv[2]));
-	SocketDatagrama socketDatagrama =  SocketDatagrama(6666);
+	SocketDatagrama socketDatagrama =  SocketDatagrama(atoi(argv[2])+100);
 	struct mensaje msj;
 	msj.messageType = 1;
     msj.requestId = 1;
@@ -23,12 +23,12 @@ int main(int argc, char *argv[]){
 
 	PaqueteDatagrama packageMulicast  = PaqueteDatagrama(msj,argv[1], atoi(argv[2]));
 	PaqueteDatagrama packageUnicast  = PaqueteDatagrama();
-	suseconds_t microsegundos = 15000;
+	suseconds_t microsegundos = 20000;
 	unsigned char ttl = 1;
-	time_t segundos = 15;
+	time_t segundos = 20;
 	int x ;
 	
-	for (;;){
+	for (int j=0;j<2;j++){
 		socketMulticast.envia(&packageMulicast,ttl);
 		socketDatagrama.recibeTimeout(&packageUnicast,segundos,microsegundos);
 		// x=socketDatagrama.recibe(&packageUnicast);

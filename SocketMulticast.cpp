@@ -76,7 +76,7 @@ int SocketMulticast::envia(PaqueteDatagrama * p, unsigned char ttl){
     direccionForanea.sin_addr.s_addr = inet_addr(p->obtieneDireccion());
     direccionForanea.sin_port = htons(p->obtienePuerto());
     unsigned int lData = sizeof(direccionForanea);
-    printf("Enviando operacion a: %s %d", p->obtieneDireccion(),p->obtienePuerto());
+    printf("Enviando operacion a: %s %d\n", p->obtieneDireccion(),p->obtienePuerto());
     // printf("multicast envia sendto(%d,%s,%d,%s,%d,)\n",s,p->obtieneDatos(), p->obtieneLongitud(),p->obtieneDireccion(),p->obtienePuerto() );
     enviado = sendto(s, p->obtieneDatos(), p->obtieneLongitud(), 0, (struct sockaddr *)&direccionForanea, lData);
     return enviado;
