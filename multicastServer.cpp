@@ -15,16 +15,19 @@ int main(int argc, char *argv[]){
     msj.requestId = 1;
     msj.operationId = 10;
 
-    strcpy(msj.arguments,"hola");
+    int nums[2]={4,8};
+    msj.arguments = nums;
+
+    // strcpy(msj.arguments,"hola");
 
 	PaqueteDatagrama packageMulicast  = PaqueteDatagrama(msj,argv[1], atoi(argv[2]));
 	PaqueteDatagrama packageUnicast  = PaqueteDatagrama();
-	suseconds_t microsegundos = 3000;
+	suseconds_t microsegundos = 15000;
 	unsigned char ttl = 1;
-	time_t segundos = 3;
+	time_t segundos = 15;
 	int x ;
 	
-	for (;;){
+	for (int j=0;j<2;j++){
 		socketMulticast.envia(&packageMulicast,ttl);
 		socketDatagrama.recibeTimeout(&packageUnicast,segundos,microsegundos);
 		// x=socketDatagrama.recibe(&packageUnicast);
